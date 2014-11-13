@@ -1,0 +1,13 @@
+body {
+  display: flex;
+}
+
+img {
+  flex: 1;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+img[src=""] {
+  display: none;
+}
