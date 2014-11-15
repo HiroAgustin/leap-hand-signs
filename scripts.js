@@ -111,8 +111,6 @@
     {
       right.src = currentGestures.right.image;
 
-      console.log(right.src);
-
       prevGestures.right = currentGestures.right;
     }
     else if (!currentGestures.right)
