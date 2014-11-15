@@ -8,11 +8,29 @@
     this.fingers = options.fingers;
   }
 
+  function $ (selector)
+  {
+    return doc.querySelectorAll(selector);
+  }
+
+  function getExtendedFingers (hand)
+  {
+    return hand.fingers
+      .filter(function (finger)
+      {
+        return finger.extended;
+      })
+      .map(function (finger)
+      {
+        return nameMap[finger.type];
+      });
+  }
+
   var gestures = []
 
-    , left = doc.getElementById('left')
+    , left = $('#left')[0]
 
-    , right = doc.getElementById('right')
+    , right = $('#right')[0]
 
     , nameMap = [
         'thumb'
@@ -60,61 +78,17 @@
   , thumbsUp
   );
 
-  var prevGestures = {
-    left: null
-  , right: null
-  };
-
-  var currentGestures = {
-    left: null
-  , right: null
-  };
+  var output = $('#output')[0];
 
   Leap.loop(function (frame)
   {
-    if (!frame.hands.length)
-    {
-      left.src = '';
-      right.src = '';
-    }
+    var extendedFingers = frame.hands.map(getExtendedFingers);
 
-    frame.hands.forEach(function (hand)
-    {
-      var currentExtendedFingers = hand.fingers.filter(function (finger)
-      {
-        return finger.extended;
-      });
+    if (extendedFingers.length)
+      output.innerHTML = JSON.stringify(extendedFingers);
 
-      currentGestures[hand.type] = gestures.filter(function (gesture)
-      {
-        var valid = currentExtendedFingers.length === gesture.fingers.length;
-
-        if (valid)
-          currentExtendedFingers.forEach(function (finger)
-          {
-            valid = valid && ~gesture.fingers.indexOf(nameMap[finger.type]);
-          });
-
-        return valid;
-      })[0];
-    });
-
-    if (currentGestures.left && currentGestures.left !== prevGestures.left)
-    {
-      left.src = currentGestures.left.image;
-      prevGestures.left = currentGestures.left;
-    }
-    else if (!currentGestures.left)
-      left.src = '';
-
-    if (currentGestures.right && currentGestures.right !== prevGestures.right)
-    {
-      right.src = currentGestures.right.image;
-
-      prevGestures.right = currentGestures.right;
-    }
-    else if (!currentGestures.right)
-      right.src = '';
+    else if (output.innerHTML)
+      output.innerHTML = '';
   });
 
 }(document));
