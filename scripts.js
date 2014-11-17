@@ -29,10 +29,12 @@
     var result = arr1.length === arr2.length;
 
     if (result)
-      arr1.forEach(function (item, index)
+      arr1.every(function (item, index)
       {
         if (item !== arr2[index])
           result = false;
+
+        return result;
       });
 
     return result;
