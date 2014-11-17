@@ -1,7 +1,14 @@
 body {
   display: flex;
+  flex-direction: column;
   height: 100%;
   margin: 0;
+}
+
+main {
+  display: flex;
+  max-height: 82%;
+  width: 100%;
 }
 
 img {
@@ -9,4 +16,8 @@ img {
   margin: 0 auto;
   max-height: 100%;
   max-width: 50%;
+}
+
+.text-center {
+  text-align: center;
 }

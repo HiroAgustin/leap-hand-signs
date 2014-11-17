@@ -71,7 +71,7 @@
     });
   }
 
-  var output = $('body')[0]
+  var output = $('#container')[0]
 
     , nameMap = [
         'thumb'
@@ -128,5 +128,15 @@
       appendGestures(output, current);
     }
   });
+
+  win.appendGestures = function ()
+  {
+    var indexes = Array.prototype.slice.call(arguments, 0);
+    // gestures
+    appendGestures(output, gestures.filter(function (item, index)
+    {
+      return ~indexes.indexOf(index);
+    }));
+  };
 
 }(window, document));
