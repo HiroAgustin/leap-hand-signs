@@ -2,15 +2,14 @@
 {
   'use strict';
 
-  function Sign (options)
-  {
-    this.image = options.image;
-    this.fingers = options.fingers;
-  }
-
   function $ (selector)
   {
     return doc.querySelectorAll(selector);
+  }
+
+  function isFingerExtended (finger)
+  {
+    return finger.extended;
   }
 
   function getFingerName (finger)
@@ -21,10 +20,7 @@
   function getExtendedFingers (hand)
   {
     return hand.fingers
-      .filter(function (finger)
-      {
-        return finger.extended;
-      })
+      .filter(isFingerExtended)
       .map(getFingerName);
   }
 
@@ -42,72 +38,95 @@
     return result;
   }
 
-  var gestures = []
+  function clearElement (element)
+  {
+    while (element.firstChild)
+      element.removeChild(element.firstChild);
 
-    , left = $('#left')[0]
+    return element;
+  }
 
-    , right = $('#right')[0]
+  function appendGestures (container, gestures)
+  {
+    var img, fragment = doc.createDocumentFragment();
+
+    gestures.forEach(function (gesture)
+    {
+      img = doc.createElement('img');
+      img.src = gesture.image;
+      fragment.appendChild(img);
+    });
+
+    clearElement(container).appendChild(fragment);
+  }
+
+  function getMatchingGestures (gestures, hands)
+  {
+    return gestures.filter(function (gesture)
+    {
+      return hands.filter(function (fingers)
+      {
+        return areEqual(gesture.fingers, fingers);
+      }).length;
+    });
+  }
+
+  var output = $('body')[0]
 
     , nameMap = [
         'thumb'
-      , 'indexFinger'
-      , 'middleFinger'
-      , 'ringFinger'
+      , 'index'
+      , 'middle'
+      , 'ring'
       , 'pinky'
       ]
 
-    , hangLoose = new Sign({
-        image: '/images/hang-loose.png'
-      , fingers: [
-          'thumb'
-        , 'pinky'
-        ]
-      })
+    , gestures = [
+        {
+          image: '/images/hang-loose.png'
+        , fingers: [
+            'thumb'
+          , 'pinky'
+          ]
+        }
+      , {
+          image: '/images/heavy-metal.png'
+        , fingers: [
+            'index'
+          , 'pinky'
+          ]
+        }
+      , {
+          image: '/images/peace.jpg'
+        , fingers: [
+            'index'
+          , 'middle'
+          ]
+        }
+      , {
+          image: '/images/high-five.jpg'
+        , fingers: [
+            'thumb'
+          , 'index'
+          , 'middle'
+          , 'ring'
+          , 'pinky'
+          ]
+        }
+      ]
 
-    , heavyMetal = new Sign({
-        image: '/images/heavy-metal.png'
-      , fingers: [
-          'indexFinger'
-        , 'pinky'
-        ]
-      })
-
-    , peace = new Sign({
-        image: '/images/peace.jpg'
-      , fingers: [
-          'indexFinger'
-        , 'middleFinger'
-        ]
-      });
-
-  gestures.push(
-    hangLoose
-  , heavyMetal
-  , peace
-  );
-
-  var output = $('#output')[0]
-    , extendedFingers = []
-    , changed = false;
+    , matching = [];
 
   Leap.loop(function (frame)
   {
-    var current = frame.hands.map(getExtendedFingers);
+    var current = getMatchingGestures(gestures, frame.hands.map(getExtendedFingers));
 
-    changed = !areEqual(current, extendedFingers);
+    if (!areEqual(matching, current))
+    {
+      matching = current;
 
-    if (changed)
-      extendedFingers = current;
+      appendGestures(output, current);
+    }
   });
-
-  function render ()
-  {
-    if (changed)
-      output.innerHTML = JSON.stringify(extendedFingers);
-
-    win.requestAnimationFrame(render);
-  }
-
-  win.requestAnimationFrame(render);
 
 }(window, document));

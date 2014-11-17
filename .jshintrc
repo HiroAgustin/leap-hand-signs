@@ -1,6 +1,9 @@
 {
-  "laxcomma": true,
+  "browser": true,
   "globals": {
     "Leap": true
-  }
+  },
+  "laxcomma": true,
+  "undef": true,
+  "unused": true
 }
