@@ -1,4 +1,4 @@
-;(function (doc, undefined)
+;(function (win, doc, undefined)
 {
   'use strict';
 
@@ -13,6 +13,11 @@
     return doc.querySelectorAll(selector);
   }
 
+  function getFingerName (finger)
+  {
+    return nameMap[finger.type];
+  }
+
   function getExtendedFingers (hand)
   {
     return hand.fingers
@@ -20,10 +25,21 @@
       {
         return finger.extended;
       })
-      .map(function (finger)
+      .map(getFingerName);
+  }
+
+  function areEqual (arr1, arr2)
+  {
+    var result = arr1.length === arr2.length;
+
+    if (result)
+      arr1.forEach(function (item, index)
       {
-        return nameMap[finger.type];
+        if (item !== arr2[index])
+          result = false;
       });
+
+    return result;
   }
 
   var gestures = []
@@ -62,33 +78,36 @@
           'indexFinger'
         , 'middleFinger'
         ]
-      })
-
-    , thumbsUp = new Sign({
-        image: '/images/thumbs-up.jpg'
-      , fingers: [
-          'thumb'
-        ]
       });
 
   gestures.push(
     hangLoose
   , heavyMetal
   , peace
-  , thumbsUp
   );
 
-  var output = $('#output')[0];
+  var output = $('#output')[0]
+    , extendedFingers = []
+    , changed = false;
 
   Leap.loop(function (frame)
   {
-    var extendedFingers = frame.hands.map(getExtendedFingers);
+    var current = frame.hands.map(getExtendedFingers);
 
-    if (extendedFingers.length)
-      output.innerHTML = JSON.stringify(extendedFingers);
+    changed = !areEqual(current, extendedFingers);
 
-    else if (output.innerHTML)
-      output.innerHTML = '';
+    if (changed)
+      extendedFingers = current;
   });
 
-}(document));
+  function render ()
+  {
+    if (changed)
+      output.innerHTML = JSON.stringify(extendedFingers);
+
+    win.requestAnimationFrame(render);
+  }
+
+  win.requestAnimationFrame(render);
+
+}(window, document));
