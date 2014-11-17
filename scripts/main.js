@@ -48,27 +48,27 @@
     return element;
   }
 
-  function appendGestures (container, gestures)
+  function showSign (container, signs)
   {
     var img, fragment = doc.createDocumentFragment();
 
-    gestures.forEach(function (gesture)
+    signs.forEach(function (sign)
     {
       img = doc.createElement('img');
-      img.src = gesture.image;
+      img.src = sign.image;
       fragment.appendChild(img);
     });
 
     clearElement(container).appendChild(fragment);
   }
 
-  function getMatchingGestures (gestures, hands)
+  function getMatchingSigns (signs, hands)
   {
-    return gestures.filter(function (gesture)
+    return signs.filter(function (sign)
     {
       return hands.filter(function (fingers)
       {
-        return areEqual(gesture.fingers, fingers);
+        return areEqual(sign.fingers, fingers);
       }).length;
     });
   }
@@ -83,7 +83,7 @@
       , 'pinky'
       ]
 
-    , gestures = [
+    , signs = [
         {
           image: '/images/hang-loose.png'
         , fingers: [
@@ -121,24 +121,14 @@
 
   Leap.loop(function (frame)
   {
-    var current = getMatchingGestures(gestures, frame.hands.map(getExtendedFingers));
+    var current = getMatchingSigns(signs, frame.hands.map(getExtendedFingers));
 
     if (!areEqual(matching, current))
     {
       matching = current;
 
-      appendGestures(output, current);
+      showSign(output, current);
     }
   });
-
-  win.appendGestures = function ()
-  {
-    var indexes = Array.prototype.slice.call(arguments, 0);
-    // gestures
-    appendGestures(output, gestures.filter(function (item, index)
-    {
-      return ~indexes.indexOf(index);
-    }));
-  };
 
 }(window, document));
