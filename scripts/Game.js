@@ -119,7 +119,7 @@
     {
       hands = hands.map(this.getExtendedFingers.bind(this));
 
-      return this.signs.filter(function (sign)
+      return this.simon.availableSigns.filter(function (sign)
       {
         return hands
           .filter(function (fingers)
