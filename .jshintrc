@@ -1,7 +1,9 @@
 {
   "browser": true,
   "globals": {
-    "Leap": true
+    "Game": true,
+    "Leap": true,
+    "utils": true
   },
   "laxcomma": true,
   "undef": true,

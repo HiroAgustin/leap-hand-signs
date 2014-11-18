@@ -1,23 +1,19 @@
-;(function ()
+;(function (win)
 {
   'use strict';
 
   function Simon (signs)
   {
     this.availableSigns = signs;
+    this.currentSigns = [];
+    this.duration = 2800;
   }
 
   Simon.prototype = {
 
     start: function ()
     {
-      this.duration = 2800;
-
-      this.currentSigns = [];
-
-      return this
-        .addSign()
-        .render();
+      return this.addSign().render();
     }
 
   , addSign: function ()
@@ -64,4 +60,6 @@
   //   }
   };
 
-}());
+  win.Simon = Simon;
+
+}(window));
