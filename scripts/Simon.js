@@ -19,6 +19,11 @@
       return this;
     }
 
+  , getCount: function ()
+    {
+      return this.currentSigns.length;
+    }
+
   , selectRandom: function (available)
     {
       return available[Math.floor(available.length * Math.random())];

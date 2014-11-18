@@ -6,6 +6,8 @@
   {
     this.events = {};
 
+    this.playerIndex = 0;
+
     this.duration = 2000;
 
     this.nameMap = ['thumb', 'index', 'middle', 'ring', 'pinky'];
@@ -15,10 +17,10 @@
         image: '/images/hang-loose.png'
       , fingers: ['thumb', 'pinky']
       }
-    , {
-        image: '/images/heavy-metal.png'
-      , fingers: ['index', 'pinky']
-      }
+    // , {
+    //     image: '/images/heavy-metal.png'
+    //   , fingers: ['index', 'pinky']
+    //   }
     , {
         image: '/images/peace.jpg'
       , fingers: ['index', 'middle']
@@ -38,23 +40,16 @@
     {
       this.simon.addSign();
 
-      return this.listen().render();
+      return this.render();
     }
 
-  , listen: function ()
-    {
-      this.on('rendered', this.toggleTurn);
-
-      return this;
-    }
-
-  , render: function ()
+  , render: function (delay)
     {
       var index = 0
 
         , duration = this.duration
 
-        , length = this.simon.currentSigns.length
+        , length = this.simon.getCount()
 
         , renderInterval = setInterval(function ()
           {
@@ -64,7 +59,7 @@
             {
               clearInterval(renderInterval);
 
-              this.emit('rendered');
+              this.toggleTurn();
             }
             else
             {
@@ -77,7 +72,10 @@
 
           }.bind(this), duration);
 
-      this.showSign(index++);
+      if (!delay)
+        this.showSign(index++);
+
+      return this;
     }
 
   , clearSign: function ()
@@ -146,11 +144,40 @@
       });
     }
 
+  , gameOver: function ()
+    {
+      alert("Wrong!");
+
+      this.isPlayerTurn = false;
+    }
+
+  , validateSigns: function (signs)
+    {
+      if (!utils.areEqual(signs, this.simon.getSign(this.playerIndex++)))
+        this.gameOver();
+
+      else if (this.playerIndex >= this.simon.getCount())
+        this.toggleTurn();
+
+      return ;
+    }
+
   , isPlayerTurn: false
 
   , toggleTurn: function ()
     {
       this.isPlayerTurn = !this.isPlayerTurn;
+
+      console.log(this.isPlayerTurn ? 'Player Turn' : 'CPU Turn');
+
+      if (!this.isPlayerTurn)
+      {
+        this.playerIndex = 0;
+
+        this.simon.addSign();
+
+        this.render(true);
+      }
 
       return this;
     }

@@ -1,5 +1,6 @@
 {
   "browser": true,
+  "devel": true,
   "globals": {
     "Game": true,
     "Leap": true,

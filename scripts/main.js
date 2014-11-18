@@ -4,7 +4,7 @@
 
   var game = new Game()
 
-    , matching = []
+    , previous = []
 
     , output = utils.$('#js-container')[0];
 
@@ -32,13 +32,20 @@
     {
       var current = game.getMatchingSigns(frame.hands);
 
-      if (!utils.areEqual(matching, current))
+      if (!current.length)
+        return showSigns(current);
+
+      if (!utils.areEqual(previous, current))
       {
-        matching = current;
+        previous = current;
 
         showSigns(current);
+
+        game.validateSigns(current);
       }
     }
+    else
+      previous = [];
   });
 
 }(document, Game, utils));
