@@ -6,7 +6,6 @@
   {
     this.availableSigns = signs;
     this.currentSigns = [];
-    this.duration = 2800;
   }
 
   Simon.prototype = {

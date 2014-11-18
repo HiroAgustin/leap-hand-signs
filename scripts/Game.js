@@ -1,4 +1,4 @@
-;(function (win, doc, utils, Simon)
+;(function (win, utils, Simon)
 {
   'use strict';
 
@@ -6,13 +6,9 @@
   {
     this.events = {};
 
-    this.nameMap = [
-      'thumb'
-    , 'index'
-    , 'middle'
-    , 'ring'
-    , 'pinky'
-    ];
+    this.duration = 2000;
+
+    this.nameMap = ['thumb', 'index', 'middle', 'ring', 'pinky'];
 
     this.signs = [
       {
@@ -42,12 +38,52 @@
     {
       this.simon.addSign();
 
-      return this.render();
+      return this.listen().render();
+    }
+
+  , listen: function ()
+    {
+      this.on('rendered', this.toggleTurn);
+
+      return this;
     }
 
   , render: function ()
     {
-      this.emit('showSigns', this.simon.currentSigns[0]);
+      var index = 0
+
+        , renderInterval = setInterval(function ()
+          {
+            this.clearSign();
+
+            if (index >= this.simon.currentSigns.length)
+            {
+              clearInterval(renderInterval);
+
+              this.emit('rendered');
+            }
+            else
+            {
+              setTimeout(function ()
+              {
+                this.showSign(index++);
+
+              }.bind(this), 800);
+            }
+
+          }.bind(this), this.duration);
+
+      this.showSign(index++);
+    }
+
+  , clearSign: function ()
+    {
+      return this.emit('showSigns', []);
+    }
+
+  , showSign: function (index)
+    {
+      return this.emit('showSigns', this.simon.getSign(index));
     }
 
   , on: function (evnt, fn)
@@ -106,12 +142,18 @@
       });
     }
 
-  , isPlayersTurn: function ()
+  , isPlayerTurn: false
+
+  , toggleTurn: function ()
     {
-      return false;
+      this.isPlayerTurn = !this.isPlayerTurn;
+
+      return this;
     }
+
+  , isGameOver: false
   };
 
   win.Game = Game;
 
-}(window, document, utils, Simon));
+}(window, utils, Simon));

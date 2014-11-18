@@ -22,11 +22,13 @@
     utils.clearElement(output).appendChild(fragment);
   }
 
-  utils.$('#js-start')[0].addEventListener('click', game.start.bind(game));
+  game.on('showSigns', showSigns);
+
+  utils.on('click', '#js-start', game.start.bind(game));
 
   Leap.loop(function (frame)
   {
-    if (game.isPlayersTurn())
+    if (game.isPlayerTurn)
     {
       var current = game.getMatchingSigns(frame.hands);
 
@@ -34,11 +36,9 @@
       {
         matching = current;
 
-        showSigns(output, current);
+        showSigns(current);
       }
     }
   });
-
-  game.on('showSigns', showSigns);
 
 }(document, Game, utils));
