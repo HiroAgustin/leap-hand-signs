@@ -76,7 +76,8 @@
       if (!delay)
         this.showSign(index++);
 
-      this.duration -= 200;
+      if (duration > 400)
+        this.duration -= 200;
 
       return this;
     }
