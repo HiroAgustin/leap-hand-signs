@@ -6,10 +6,6 @@
   {
     this.events = {};
 
-    this.playerIndex = 0;
-
-    this.duration = 2000;
-
     this.nameMap = ['thumb', 'index', 'middle', 'ring', 'pinky'];
 
     this.signs = [
@@ -36,11 +32,16 @@
 
   Game.prototype = {
 
-    start: function ()
+    start: function (delay)
     {
-      this.simon.addSign();
+      this.playerIndex = 0;
+      this.isPlayerTurn = false;
 
-      return this.render();
+      this.duration = 2000;
+
+      this.simon.restart().addSign();
+
+      return this.render(delay);
     }
 
   , render: function (delay)
@@ -148,9 +149,7 @@
 
   , gameOver: function ()
     {
-      alert("Wrong!");
-
-      this.isPlayerTurn = false;
+      this.emit('gameOver');
     }
 
   , validateSigns: function (signs)
@@ -163,8 +162,6 @@
 
       return ;
     }
-
-  , isPlayerTurn: false
 
   , toggleTurn: function ()
     {

@@ -1,4 +1,4 @@
-;(function (doc, Game, utils)
+;(function (win, doc, Game, utils)
 {
   'use strict';
 
@@ -19,15 +19,30 @@
       fragment.appendChild(img);
     });
 
-    utils.clearElement(output).appendChild(fragment);
+    clearScreen().appendChild(fragment);
   }
 
-  game.on('showSigns', showSigns);
+  function clearScreen ()
+  {
+    return utils.clearElement(output);
+  }
+
+  function gameOver ()
+  {
+    if (win.confirm('WRONG! Want to try again?'))
+      game.start(true);
+
+    clearScreen();
+  }
+
+  game
+    .on('showSigns', showSigns)
+    .on('gameOver', gameOver);
 
   utils.on('click', '#js-start', function ()
   {
     output.classList.remove('flex-1');
-    
+
     game.start();
   });
 
@@ -40,7 +55,7 @@
       if (!current.length)
       {
         previous = [];
-        showSigns(current);
+        clearScreen();
       }
       else if (!utils.areEqual(previous, current))
       {
@@ -53,4 +68,4 @@
     }
   });
 
-}(document, Game, utils));
+}(window, document, Game, utils));

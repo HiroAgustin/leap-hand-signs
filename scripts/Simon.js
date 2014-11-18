@@ -19,6 +19,13 @@
       return this;
     }
 
+  , restart: function ()
+    {
+      this.currentSigns = [];
+
+      return this;
+    }
+
   , getCount: function ()
     {
       return this.currentSigns.length;
