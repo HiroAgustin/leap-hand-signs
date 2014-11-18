@@ -11,10 +11,10 @@
         image: '/images/hang-loose.png'
       , fingers: ['thumb', 'pinky']
       }
-    // , {
-    //     image: '/images/heavy-metal.png'
-    //   , fingers: ['index', 'pinky']
-    //   }
+    , {
+        image: '/images/heavy-metal.png'
+      , fingers: ['index', 'pinky']
+      }
     , {
         image: '/images/peace.jpg'
       , fingers: ['index', 'middle']
