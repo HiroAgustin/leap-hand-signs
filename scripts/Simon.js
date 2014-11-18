@@ -13,13 +13,13 @@
     addSign: function ()
     {
       this.currentSigns.push(
-        [this.selectSign(this.availableSigns)]
+        [this.selectRandom(this.availableSigns)]
       );
 
       return this;
     }
 
-  , selectSign: function (available)
+  , selectRandom: function (available)
     {
       return available[Math.floor(available.length * Math.random())];
     }

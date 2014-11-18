@@ -52,11 +52,15 @@
     {
       var index = 0
 
+        , duration = this.duration
+
+        , length = this.simon.currentSigns.length
+
         , renderInterval = setInterval(function ()
           {
             this.clearSign();
 
-            if (index >= this.simon.currentSigns.length)
+            if (index >= length)
             {
               clearInterval(renderInterval);
 
@@ -68,10 +72,10 @@
               {
                 this.showSign(index++);
 
-              }.bind(this), 800);
+              }.bind(this), duration / 4);
             }
 
-          }.bind(this), this.duration);
+          }.bind(this), duration);
 
       this.showSign(index++);
     }
