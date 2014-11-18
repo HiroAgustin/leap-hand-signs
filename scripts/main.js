@@ -33,9 +33,11 @@
       var current = game.getMatchingSigns(frame.hands);
 
       if (!current.length)
-        return showSigns(current);
-
-      if (!utils.areEqual(previous, current))
+      {
+        previous = [];
+        showSigns(current);
+      }
+      else if (!utils.areEqual(previous, current))
       {
         previous = current;
 
@@ -44,8 +46,6 @@
         game.validateSigns(current);
       }
     }
-    else
-      previous = [];
   });
 
 }(document, Game, utils));

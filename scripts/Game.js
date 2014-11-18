@@ -75,6 +75,8 @@
       if (!delay)
         this.showSign(index++);
 
+      this.duration -= 200;
+
       return this;
     }
 
