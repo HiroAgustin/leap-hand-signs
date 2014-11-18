@@ -24,7 +24,12 @@
 
   game.on('showSigns', showSigns);
 
-  utils.on('click', '#js-start', game.start.bind(game));
+  utils.on('click', '#js-start', function ()
+  {
+    output.classList.remove('flex-1');
+    
+    game.start();
+  });
 
   Leap.loop(function (frame)
   {

@@ -10,9 +10,14 @@ h1 {
 }
 
 main {
+  align-items: center;
   display: flex;
   max-height: 82%;
   width: 100%;
+}
+
+.flex-1 {
+  flex: 1;
 }
 
 button {
