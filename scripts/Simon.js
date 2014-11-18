@@ -11,12 +11,7 @@
 
   Simon.prototype = {
 
-    start: function ()
-    {
-      return this.addSign().render();
-    }
-
-  , addSign: function ()
+    addSign: function ()
     {
       this.currentSigns.push(
         [this.selectSign(this.availableSigns)]
@@ -34,30 +29,6 @@
     {
       return this.currentSigns[index];
     }
-
-  // , render: function ()
-  //   {
-  //     var index = 0
-  //
-  //       , renderInterval = setInterval(function ()
-  //         {
-  //           clearElement(output);
-  //
-  //           if (index >= this.currentSigns.length)
-  //             return clearInterval(renderInterval);
-  //
-  //           setTimeout(function ()
-  //           {
-  //             this.renderSign(index++);
-  //
-  //           }.bind(this), 800);
-  //
-  //         }.bind(this), this.duration);
-  //
-  //     clearElement(output);
-  //
-  //     this.renderSign(index++);
-  //   }
   };
 
   win.Simon = Simon;
