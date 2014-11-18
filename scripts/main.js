@@ -1,21 +1,44 @@
-;(function (Game, utils)
+;(function (doc, Game, utils)
 {
   'use strict';
 
   var game = new Game()
+
     , matching = []
-    , output = utils.$('#container')[0];
+
+    , output = utils.$('#js-container')[0];
+
+  function showSigns (signs)
+  {
+    var img, fragment = doc.createDocumentFragment();
+
+    signs.forEach(function (sign)
+    {
+      img = doc.createElement('img');
+      img.src = sign.image;
+      fragment.appendChild(img);
+    });
+
+    utils.clearElement(output).appendChild(fragment);
+  }
+
+  utils.$('#js-start')[0].addEventListener('click', game.start.bind(game));
 
   Leap.loop(function (frame)
   {
-    var current = game.getMatchingSigns(frame.hands);
-
-    if (!utils.areEqual(matching, current))
+    if (game.isPlayersTurn())
     {
-      matching = current;
+      var current = game.getMatchingSigns(frame.hands);
 
-      game.showSign(output, current);
+      if (!utils.areEqual(matching, current))
+      {
+        matching = current;
+
+        showSigns(output, current);
+      }
     }
   });
 
-}(Game, utils));
+  game.on('showSigns', showSigns);
+
+}(document, Game, utils));
