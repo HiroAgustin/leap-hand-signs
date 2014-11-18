@@ -1,9 +1,11 @@
-;(function (win, doc, utils)
+;(function (win, doc, utils, Simon)
 {
   'use strict';
 
   function Game ()
   {
+    this.events = {};
+
     this.nameMap = [
       'thumb'
     , 'index'
@@ -30,11 +32,50 @@
       , fingers: ['thumb', 'index', 'middle', 'ring', 'pinky']
       }
     ];
+
+    this.simon = new Simon(this.signs);
   }
 
   Game.prototype = {
 
-    isFingerExtended: function (finger)
+    start: function ()
+    {
+      this.simon.addSign();
+
+      return this.render();
+    }
+
+  , render: function ()
+    {
+      this.emit('showSigns', this.simon.currentSigns[0]);
+    }
+
+  , on: function (evnt, fn)
+    {
+      var events = this.events;
+
+      if (!(evnt in events))
+        events[evnt] = [];
+
+      events[evnt].push(fn);
+
+      return this;
+    }
+
+  , emit: function (evnt)
+    {
+      var self = this
+        , args = Array.prototype.slice.call(arguments, 1);
+
+      this.events[evnt].forEach(function (fn)
+      {
+        fn.apply(self, args);
+      });
+
+      return this;
+    }
+
+  , isFingerExtended: function (finger)
     {
       return finger.extended;
     }
@@ -51,20 +92,6 @@
         .map(this.getFingerName.bind(this));
     }
 
-  , showSign: function (container, signs)
-    {
-      var img, fragment = doc.createDocumentFragment();
-
-      signs.forEach(function (sign)
-      {
-        img = doc.createElement('img');
-        img.src = sign.image;
-        fragment.appendChild(img);
-      });
-
-      utils.clearElement(container).appendChild(fragment);
-    }
-
   , getMatchingSigns: function (hands)
     {
       hands = hands.map(this.getExtendedFingers.bind(this));
@@ -78,8 +105,13 @@
           }).length;
       });
     }
+
+  , isPlayersTurn: function ()
+    {
+      return false;
+    }
   };
 
   win.Game = Game;
 
-}(window, document, utils));
+}(window, document, utils, Simon));
