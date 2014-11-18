@@ -8,26 +8,7 @@
 
     this.nameMap = ['thumb', 'index', 'middle', 'ring', 'pinky'];
 
-    this.signs = [
-      {
-        image: '/images/hang-loose.png'
-      , fingers: ['thumb', 'pinky']
-      }
-    // , {
-    //     image: '/images/heavy-metal.png'
-    //   , fingers: ['index', 'pinky']
-    //   }
-    , {
-        image: '/images/peace.jpg'
-      , fingers: ['index', 'middle']
-      }
-    , {
-        image: '/images/high-five.jpg'
-      , fingers: ['thumb', 'index', 'middle', 'ring', 'pinky']
-      }
-    ];
-
-    this.simon = new Simon(this.signs);
+    this.simon = new Simon();
   }
 
   Game.prototype = {

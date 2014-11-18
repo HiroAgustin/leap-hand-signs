@@ -2,10 +2,28 @@
 {
   'use strict';
 
-  function Simon (signs)
+  function Simon ()
   {
-    this.availableSigns = signs;
     this.currentSigns = [];
+
+    this.availableSigns = [
+      {
+        image: '/images/hang-loose.png'
+      , fingers: ['thumb', 'pinky']
+      }
+    // , {
+    //     image: '/images/heavy-metal.png'
+    //   , fingers: ['index', 'pinky']
+    //   }
+    , {
+        image: '/images/peace.jpg'
+      , fingers: ['index', 'middle']
+      }
+    , {
+        image: '/images/high-five.jpg'
+      , fingers: ['thumb', 'index', 'middle', 'ring', 'pinky']
+      }
+    ];
   }
 
   Simon.prototype = {
