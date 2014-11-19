@@ -1,13 +1,16 @@
 <link rel="stylesheet" href="/bower_components/normalize.css/normalize.css">
 <link rel="stylesheet" href="/styles/styles.css">
 
+<div id="js-cursor" class="cursor circle circle-sm"></div>
+
 <h1>Simon</h1>
 
 <main role="main" id="js-container" class="flex-1">
-  <button id="js-start" autofocus>Play</button>
+  <button id="js-start">Play</button>
 </main>
 
 <script src="/bower_components/leapjs/leap-0.6.2.js"></script>
+<script src="/bower_components/leapjs-plugins/main/screen-position/leap.screen-position.js"></script>
 <script src="/scripts/utils.js"></script>
 <script src="/scripts/Simon.js"></script>
 <script src="/scripts/Game.js"></script>

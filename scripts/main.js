@@ -6,7 +6,11 @@
 
     , previous = []
 
-    , output = utils.$('#js-container')[0];
+    , output = utils.$('#js-container')[0]
+
+    , cursor = utils.$('#js-cursor')[0]
+
+    , start = utils.$('#js-start')[0];
 
   function showSigns (signs)
   {
@@ -46,26 +50,46 @@
     game.start();
   });
 
+  var hand, position, x, y, element;
+
   Leap.loop(function (frame)
   {
-    if (game.isPlayerTurn)
+    if (game.hasStarted)
     {
-      var current = game.getMatchingSigns(frame.hands);
-
-      if (!current.length)
+      if (game.isPlayerTurn)
       {
-        previous = [];
-        clearScreen();
-      }
-      else if (!utils.areEqual(previous, current))
-      {
-        previous = current;
+        var current = game.getMatchingSigns(frame.hands);
 
-        showSigns(current);
+        if (!current.length)
+        {
+          previous = [];
+          clearScreen();
+        }
+        else if (!utils.areEqual(previous, current))
+        {
+          previous = current;
 
-        game.validateSigns(current);
+          showSigns(current);
+
+          game.validateSigns(current);
+        }
       }
     }
-  });
+    else if (frame.hands.length)
+    {
+      hand = frame.hands[0];
+      position = hand.screenPosition();
+      x = parseFloat(position[0].toFixed(10));
+      y = parseFloat(position[1].toFixed(10)) + 400;
+
+      cursor.style = 'transform: translateX(' + x + 'px) translateY(' + y + 'px);';
+      cursor.style.transform = 'translateX(' + x + 'px) translateY(' + y + 'px)';
+
+      element = doc.elementFromPoint(x, y);
+
+      if (element === start && hand.grabStrength === 1)
+        start.click();
+    }
+  }).use('screenPosition', {scale: 0.5});
 
 }(window, document, Game, utils));

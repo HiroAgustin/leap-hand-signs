@@ -15,8 +15,12 @@
 
     start: function (delay)
     {
+      this.hasStarted = true;
+
       this.playerIndex = 0;
       this.isPlayerTurn = false;
+      
+      this.isGameOver = false;
 
       this.duration = 2000;
 
@@ -131,6 +135,7 @@
 
   , gameOver: function ()
     {
+      this.hasStarted = false;
       this.emit('gameOver');
     }
 
@@ -162,8 +167,6 @@
 
       return this;
     }
-
-  , isGameOver: false
   };
 
   win.Game = Game;
