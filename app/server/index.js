@@ -3,6 +3,8 @@
   'use strict';
 
   var app = module.exports = express();
+  
+  process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
   app.set('view engine', 'ejs');
   app.engine('html', ejs.renderFile);
@@ -16,6 +18,9 @@
   }));
 
   app.use(express.static(path.join(__dirname, '/../public')));
+
+  if (app.get('env') === 'development')
+    app.use(express.static(path.join(__dirname, '/../../.tmp')));
 
   app.get('/', function (req, res)
   {
