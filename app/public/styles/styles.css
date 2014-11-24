@@ -24,6 +24,7 @@ main {
 
 .cursor {
   background: #000;
+  display: none;
   position: absolute;
   will-change: transform;
 }

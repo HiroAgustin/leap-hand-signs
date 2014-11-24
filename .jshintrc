@@ -4,6 +4,7 @@
   "globals": {
     "Game": true,
     "Leap": true,
+    "Pointer": true,
     "Simon": true,
     "utils": true
   },

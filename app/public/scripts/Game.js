@@ -1,25 +1,24 @@
-;(function (win, utils, Simon)
+;(function (win, doc, utils, Simon)
 {
   'use strict';
 
   function Game ()
   {
-    this.events = {};
+    this.container = utils.$('#js-container')[0];
 
     this.nameMap = ['thumb', 'index', 'middle', 'ring', 'pinky'];
 
     this.simon = new Simon();
+
+    this.controller = new Leap.Controller();
   }
 
   Game.prototype = {
 
     start: function (delay)
     {
-      this.hasStarted = true;
-
       this.playerIndex = 0;
       this.isPlayerTurn = false;
-      
       this.isGameOver = false;
 
       this.duration = 2000;
@@ -27,6 +26,40 @@
       this.simon.restart().addSign();
 
       return this.render(delay);
+    }
+
+  , stopListening: function ()
+    {
+      this.controller.disconnect();
+
+      return this;
+    }
+
+  , listen: function ()
+    {
+      var previous, current;
+
+      this.controller.connect().loop(function (frame)
+      {
+        current = this.getMatchingSign(frame.hands)[0];
+
+        if (!current)
+        {
+          previous = {};
+          this.clearScreen();
+        }
+        else if (previous !== current)
+        {
+          previous = current;
+
+          this.showSign(current);
+
+          this.evaluateSign(current);
+        }
+
+      }.bind(this));
+
+      return this;
     }
 
   , render: function (delay)
@@ -39,7 +72,7 @@
 
         , renderInterval = setInterval(function ()
           {
-            this.clearSign();
+            this.clearScreen();
 
             if (index >= length)
             {
@@ -67,39 +100,18 @@
       return this;
     }
 
-  , clearSign: function ()
+  , clearScreen: function ()
     {
-      return this.emit('showSigns', []);
+      return utils.clearElement(this.container);
     }
 
-  , showSign: function (index)
+  , showSign: function (sign)
     {
-      return this.emit('showSigns', this.simon.getSign(index));
-    }
+      var img = doc.createElement('img');
 
-  , on: function (evnt, fn)
-    {
-      var events = this.events;
+      img.src = (typeof sign === 'number' ? this.simon.getSign(sign) : sign).image;
 
-      if (!(evnt in events))
-        events[evnt] = [];
-
-      events[evnt].push(fn);
-
-      return this;
-    }
-
-  , emit: function (evnt)
-    {
-      var self = this
-        , args = Array.prototype.slice.call(arguments, 1);
-
-      this.events[evnt].forEach(function (fn)
-      {
-        fn.apply(self, args);
-      });
-
-      return this;
+      this.clearScreen().appendChild(img);
     }
 
   , isFingerExtended: function (finger)
@@ -119,35 +131,38 @@
         .map(this.getFingerName.bind(this));
     }
 
-  , getMatchingSigns: function (hands)
+  , getMatchingSign: function (hands)
     {
       hands = hands.map(this.getExtendedFingers.bind(this));
 
-      return this.simon.availableSigns.filter(function (sign)
-      {
-        return hands
-          .filter(function (fingers)
-          {
-            return utils.areEqual(sign.fingers, fingers);
-          }).length;
-      });
+      return this.simon.availableSigns
+        .filter(function (sign)
+        {
+          return hands
+            .filter(function (fingers)
+            {
+              return utils.areEqual(sign.fingers, fingers);
+            }).length;
+        });
     }
 
   , gameOver: function ()
     {
-      this.hasStarted = false;
-      this.emit('gameOver');
+      if (win.confirm('WRONG! Want to try again?'))
+        this.start(true);
+
+      this.clearScreen();
     }
 
-  , validateSigns: function (signs)
+  , evaluateSign: function (sign)
     {
-      if (!utils.areEqual(signs, this.simon.getSign(this.playerIndex++)))
+      if (sign !== this.simon.getSign(this.playerIndex++))
         this.gameOver();
 
       else if (this.playerIndex >= this.simon.getCount())
         this.toggleTurn();
 
-      return ;
+      return this;
     }
 
   , toggleTurn: function ()
@@ -156,8 +171,14 @@
 
       console.log(this.isPlayerTurn ? 'Player Turn' : 'CPU Turn');
 
-      if (!this.isPlayerTurn)
+      if (this.isPlayerTurn)
       {
+        this.listen();
+      }
+      else
+      {
+        this.stopListening();
+
         this.playerIndex = 0;
 
         this.simon.addSign();
@@ -171,4 +192,4 @@
 
   win.Game = Game;
 
-}(window, utils, Simon));
+}(window, document, utils, Simon));

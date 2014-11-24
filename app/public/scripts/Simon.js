@@ -31,7 +31,7 @@
     addSign: function ()
     {
       this.currentSigns.push(
-        [this.selectRandom(this.availableSigns)]
+        this.selectRandom(this.availableSigns)
       );
 
       return this;
