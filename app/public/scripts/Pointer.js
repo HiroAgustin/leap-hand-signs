@@ -32,8 +32,8 @@
 
         position = hands[0].screenPosition();
 
-        x = parseFloat(position[0].toFixed(3));
-        y = parseFloat(position[1].toFixed(3)) + 400;
+        x = position[0];
+        y = position[1];
 
         if (x || y)
           this.transform(x, y);
