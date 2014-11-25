@@ -94,7 +94,7 @@
 
   , isVisible: function ()
     {
-      return this.element.style.display !== 'none';
+      return this.element.style.display === 'block';
     }
 
   , display: function (display)
