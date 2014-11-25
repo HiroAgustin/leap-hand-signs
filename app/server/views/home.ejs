@@ -1,11 +1,15 @@
 <% include partials/head %>
 
+<body class="u-Flex u-Flex--Column">
+
 <div id="js-cursor" class="cursor circle circle-sm"></div>
 
-<h1><strong>Simon</strong> Signs</h1>
+<h1 id="js-title"><strong>Simon</strong> Signs</h1>
 
-<main role="main" id="js-container" class="flex-1">
-  <button id="js-start" class="circle circle-lg btn">Play</button>
+<main role="main" id="js-container" class="u-Flex u-Flex-1 u-Flex--Center">
+  <button id="js-start" class="btn circle circle-lg">Play</button>
 </main>
+
+<p id="js-message" class="text-center">Hold your hand over the Play button to start</p>
 
 <% include partials/scripts %>

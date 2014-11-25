@@ -11,27 +11,7 @@ html {
 
 body {
   background: $background-color;
-  display: flex;
-  flex-direction: column;
   min-height: 100%;
-  margin: 0;
   overflow: hidden;
-}
-
-main {
-  align-items: center;
-  display: flex;
-  max-height: 82%;
-  width: 100%;
-}
-
-.flex-1 {
-  flex: 1;
-}
-
-img {
-  display: block;
-  margin: 0 auto;
-  max-height: 100%;
-  max-width: 50%;
+  padding: 40px;
 }
