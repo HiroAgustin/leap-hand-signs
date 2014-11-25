@@ -76,7 +76,7 @@ module.exports = function (grunt)
         dest: '<%= config.dist %>/public'
       , root: '<%= config.app %>/public'
       }
-    ,	html: ['<%= config.app %>/server/views/{,*/}*.ejs']
+    ,	html: ['<%= config.app %>/server/views/{,*/}*.html']
     }
 
   , filerev: {
@@ -91,7 +91,7 @@ module.exports = function (grunt)
 
     // Performs rewrites based on rev and the useminPrepare configuration
   ,	usemin: {
-      html: ['<%= config.dist %>/server/views/{,*/}*.ejs']
+      html: ['<%= config.dist %>/server/views/{,*/}*.html']
     ,	css: ['<%= config.dist %>/public/styles/{,*/}*.css']
     ,	js: ['<%= config.dist %>/public/scripts/{,*/}*.js']
     ,	options: {
@@ -123,7 +123,7 @@ module.exports = function (grunt)
       ,	files: [{
           expand: true
         ,	cwd: '<%= config.dist %>/server/views'
-        ,	src: '{,*/}*.ejs'
+        ,	src: '{,*/}*.html'
         ,	dest: '<%= config.dist %>/server/views'
         }]
       }
@@ -238,7 +238,7 @@ module.exports = function (grunt)
           livereload: true
         }
       ,	files: [
-          '<%= config.app %>/server/views/{,*/}*.ejs'
+          '<%= config.app %>/server/views/{,*/}*.html'
         ,	'.tmp/styles/{,*/}*.css'
         ,	'<%= config.app %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
