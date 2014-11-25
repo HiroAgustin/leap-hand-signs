@@ -39,7 +39,7 @@
     {
       var previous, current;
 
-      this.controller.connect().loop(function (frame)
+      this.controller.loop(function (frame)
       {
         current = this.getMatchingSign(frame.hands)[0];
 

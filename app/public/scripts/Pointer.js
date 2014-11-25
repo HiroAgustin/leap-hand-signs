@@ -20,7 +20,7 @@
         , target = this.target
         , classList = target.classList;
 
-      this.controller.connect().loop(function (frame)
+      this.controller.loop(function (frame)
       {
         hands = frame.hands;
 
