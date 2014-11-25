@@ -59,7 +59,7 @@ module.exports = function (grunt)
       target: {
         // Point to the files that should be updated when
         // you run `grunt wiredep`
-        src: ['<%= config.app %>/server/views/{,*/}*.html']
+        src: ['<%= config.app %>/server/views/{,*/}*.ejs']
       , exclude: [
           '<%= config.app %>/public/bower_components/leapjs-plugins'
         ]
@@ -76,7 +76,7 @@ module.exports = function (grunt)
         dest: '<%= config.dist %>/public'
       , root: '<%= config.app %>/public'
       }
-    ,	html: ['<%= config.app %>/server/views/{,*/}*.html']
+    ,	html: ['<%= config.app %>/server/views/{,*/}*.ejs']
     }
 
   , filerev: {
@@ -91,7 +91,7 @@ module.exports = function (grunt)
 
     // Performs rewrites based on rev and the useminPrepare configuration
   ,	usemin: {
-      html: ['<%= config.dist %>/server/views/{,*/}*.html']
+      html: ['<%= config.dist %>/server/views/{,*/}*.ejs']
     ,	css: ['<%= config.dist %>/public/styles/{,*/}*.css']
     ,	js: ['<%= config.dist %>/public/scripts/{,*/}*.js']
     ,	options: {
@@ -123,7 +123,7 @@ module.exports = function (grunt)
       ,	files: [{
           expand: true
         ,	cwd: '<%= config.dist %>/server/views'
-        ,	src: '{,*/}*.html'
+        ,	src: '{,*/}*.ejs'
         ,	dest: '<%= config.dist %>/server/views'
         }]
       }
@@ -238,7 +238,7 @@ module.exports = function (grunt)
           livereload: true
         }
       ,	files: [
-          '<%= config.app %>/server/views/{,*/}*.html'
+          '<%= config.app %>/server/views/{,*/}*.ejs'
         ,	'.tmp/styles/{,*/}*.css'
         ,	'<%= config.app %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]

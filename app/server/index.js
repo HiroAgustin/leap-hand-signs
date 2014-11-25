@@ -1,13 +1,12 @@
-(function (express, ejs, compression, bodyParser, path)
+(function (express, compression, bodyParser, path)
 {
   'use strict';
 
   var app = module.exports = express();
-  
+
   process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
   app.set('view engine', 'ejs');
-  app.engine('html', ejs.renderFile);
   app.set('views', path.join(__dirname, '/views'));
 
   app.use(compression());
@@ -17,16 +16,16 @@
     extended: false
   }));
 
-  app.use(express.static(path.join(__dirname, '/../public')));
-
   if (app.get('env') === 'development')
     app.use(express.static(path.join(__dirname, '/../../.tmp')));
 
+  app.use(express.static(path.join(__dirname, '/../public')));
+
   app.get('/', function (req, res)
   {
-    res.render('index.html');
+    res.render('home');
   });
 
   app.listen(process.env.PORT || 8000);
 
-}(require('express'), require('ejs'), require('compression'), require('body-parser'), require('path')));
+}(require('express'), require('compression'), require('body-parser'), require('path')));
