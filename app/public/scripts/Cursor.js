@@ -2,7 +2,7 @@
 {
   'use strict';
 
-  function Pointer (options)
+  function Cursor (options)
   {
     this.events = {};
 
@@ -12,7 +12,7 @@
     this.controller = new Leap.Controller().use('screenPosition', {scale: 0.5});
   }
 
-  Pointer.prototype = {
+  Cursor.prototype = {
 
     start: function ()
     {
@@ -122,6 +122,6 @@
     }
   };
 
-  win.Pointer = Pointer;
+  win.Cursor = Cursor;
 
 }(window, document));

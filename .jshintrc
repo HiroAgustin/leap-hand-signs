@@ -2,9 +2,9 @@
   "browser": true,
   "devel": true,
   "globals": {
+    "Cursor": true,
     "Game": true,
     "Leap": true,
-    "Pointer": true,
     "Simon": true,
     "utils": true
   },
