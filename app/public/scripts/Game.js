@@ -2,9 +2,9 @@
 {
   'use strict';
 
-  function Game ()
+  function Game (options)
   {
-    this.container = utils.$('#js-container');
+    this.container = options.element;
 
     this.nameMap = ['thumb', 'index', 'middle', 'ring', 'pinky'];
 

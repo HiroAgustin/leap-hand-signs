@@ -5,6 +5,7 @@
     "Cursor": true,
     "Game": true,
     "Leap": true,
+    "PointerLock": true,
     "Simon": true,
     "utils": true
   },

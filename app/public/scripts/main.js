@@ -1,12 +1,18 @@
-;(function ()
+;(function (utils)
 {
   'use strict';
 
-  var game = new Game()
+  var game = new Game({
+        element: utils.$('#js-container')
+      })
 
     , cursor = new Cursor({
         element: utils.$('#js-cursor')
       , target: utils.$('#js-start')
+      })
+
+    , pointerLock = new PointerLock({
+        element: utils.$('#js-overlay')
       });
 
   cursor.on('ready', function ()
@@ -15,6 +21,13 @@
     game.start();
   });
 
-  cursor.start();
+  pointerLock.on('pointerLocked', function (isLocked)
+  {
+    if (isLocked)
+      cursor.start();
 
-}());
+    else
+      cursor.stop();
+  });
+
+}(utils));

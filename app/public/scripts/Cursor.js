@@ -25,7 +25,12 @@
         hands = frame.hands;
 
         if (!hands.length)
-          return this.hide();
+        {
+          if (this.isVisible())
+            this.hide();
+
+          return;
+        }
 
         if (!this.isVisible())
           this.show();
@@ -58,10 +63,10 @@
     {
       var style = this.element.style;
 
-      style.webkitTransform = 'translateX(' + x + 'px) translateY(' + y + 'px) translateZ(0)';
-      style.MozTransform = 'translateX(' + x + 'px) translateY(' + y + 'px) translateZ(0)';
-      style.msTransform = 'translateX(' + x + 'px) translateY(' + y + 'px) translateZ(0)';
-      style.OTransform = 'translateX(' + x + 'px) translateY(' + y + 'px) translateZ(0)';
+      style.webkitTransform =
+      style.MozTransform =
+      style.msTransform =
+      style.OTransform =
       style.transform = 'translateX(' + x + 'px) translateY(' + y + 'px) translateZ(0)';
 
       return this;
@@ -118,7 +123,11 @@
     {
       this.controller.disconnect();
 
-      return this.hide();
+      // Animation loop iterates one time after disconnect
+      // resulting on an unwanted .show()
+      setTimeout(this.hide.bind(this), 10);
+
+      return this;
     }
   };
 

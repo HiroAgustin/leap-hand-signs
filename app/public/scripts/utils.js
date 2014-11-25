@@ -20,7 +20,9 @@
 
   ,	on: function on (evnt, selector, callback)
     {
-      return this.forEach(this.$(selector), function (element)
+      var elements = typeof selector === 'string' ? this.$(selector) : selector.length ? selector : [selector];
+
+      return this.forEach(elements, function (element)
       {
         element.addEventListener(evnt, callback);
       });
@@ -55,6 +57,7 @@
 
       return result;
     }
+    // EXTEND
   };
 
   win.utils = utils;
