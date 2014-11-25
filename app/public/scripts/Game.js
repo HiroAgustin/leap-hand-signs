@@ -4,7 +4,7 @@
 
   function Game ()
   {
-    this.container = utils.$('#js-container')[0];
+    this.container = utils.$('#js-container');
 
     this.nameMap = ['thumb', 'index', 'middle', 'ring', 'pinky'];
 

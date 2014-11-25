@@ -6,6 +6,10 @@
 
     $: function $ (selector, context)
     {
+      // if selector starts with hashtag, 0 is falsy
+      if (!selector.indexOf('#'))
+        return doc.getElementById(selector.substring(1));
+
       return (context || doc).querySelectorAll(selector);
     }
 

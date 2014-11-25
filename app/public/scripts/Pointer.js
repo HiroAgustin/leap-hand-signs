@@ -2,12 +2,12 @@
 {
   'use strict';
 
-  function Pointer ()
+  function Pointer (options)
   {
     this.events = {};
 
-    this.element = utils.$('#js-cursor')[0];
-    this.target = utils.$('#js-start')[0];
+    this.element = options.element;
+    this.target = options.target;
 
     this.controller = new Leap.Controller().use('screenPosition', {scale: 0.5});
   }
