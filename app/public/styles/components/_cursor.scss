@@ -1,0 +1,9 @@
+@import "config";
+
+.cursor {
+  background: $cursor-color;
+  display: none;
+  opacity: $cursor-opacity;
+  position: absolute;
+  will-change: transform;
+}

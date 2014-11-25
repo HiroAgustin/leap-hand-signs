@@ -16,7 +16,9 @@
 
     start: function ()
     {
-      var element, hands, position, x, y;
+      var element, hands, position, x, y
+        , target = this.target
+        , classList = target.classList;
 
       this.controller.connect().loop(function (frame)
       {
@@ -38,8 +40,16 @@
 
         element = doc.elementFromPoint(x, y);
 
-        if (element === this.target && hands[0].grabStrength === 1)
-          this.emit('ready');
+        if (element === target)
+        {
+          if (!classList.contains('active'))
+            classList.add('active');
+
+          if (hands[0].grabStrength === 1)
+            this.emit('ready');
+        }
+        else if (classList.contains('active'))
+          classList.remove('active');
 
       }.bind(this));
     }
