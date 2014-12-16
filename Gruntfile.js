@@ -176,6 +176,15 @@ module.exports = function (grunt)
         , 'bower_components/**/*.css'
         ]
       }
+
+    , scripts: {
+        expand: true
+        , cwd: '<%= config.app %>/public/'
+        , dest: '.tmp/'
+        , src: [
+            'scripts/{,*/}*.js'
+          ]
+      }
     }
 
     // Renames files for browser caching purposes
@@ -229,6 +238,11 @@ module.exports = function (grunt)
       ,	tasks: ['compass', 'autoprefixer']
       }
 
+    , coffee: {
+        files: ['<%= config.app %>/public/scripts/{,*/}*.{coffee}']
+      ,	tasks: ['coffee']
+      }
+
     , gruntfile: {
         files: ['Gruntfile.js']
       }
@@ -240,6 +254,7 @@ module.exports = function (grunt)
       ,	files: [
           '<%= config.app %>/server/views/{,*/}*.ejs'
         ,	'.tmp/styles/{,*/}*.css'
+        ,	'.tmp/scripts/{,*/}*.js'
         ,	'<%= config.app %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
         ]
       }
@@ -278,6 +293,17 @@ module.exports = function (grunt)
         options: {
           debugInfo: false
         }
+      }
+    }
+
+  , coffee: {
+      compile: {
+        expand: true
+        , flatten: true
+        , cwd: '<%= config.app %>/public/scripts'
+        , src: ['*.coffee']
+        , dest: '.tmp/scripts'
+        , ext: '.js'
       }
     }
 
@@ -323,6 +349,7 @@ module.exports = function (grunt)
   {
     grunt.task.run([
       'clean:server'
+    , 'coffee'
     , 'compass'
     ,	'autoprefixer'
     , 'express:dev'
@@ -335,6 +362,7 @@ module.exports = function (grunt)
   grunt.registerTask('build', [
     'clean:dist'
   , 'useminPrepare'
+  , 'coffee'
   , 'compass'
   , 'autoprefixer'
   ,	'copy'
