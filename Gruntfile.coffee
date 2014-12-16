@@ -5,60 +5,54 @@
   module.exports = (grunt) ->
 
     # Load grunt tasks automatically, when needed
-    jit(grunt, {
+    jit(grunt,
       express: 'grunt-express-server'
       useminPrepare: 'grunt-usemin'
       buildcontrol: 'grunt-build-control'
-    })
+    )
 
     # Time how long tasks take. Can help when optimizing build times
     time(grunt)
 
     # Define the configuration for all the tasks
-    grunt.initConfig({
+    grunt.initConfig(
       # Project settings
       pkg: grunt.file.readJSON('package.json')
 
-      config: {
+      config:
         app: 'app'
         dist: 'dist'
-      }
 
       # Add vendor prefixed styles
-      autoprefixer: {
+      autoprefixer:
 
-        options: {
+        options:
           browsers: ['last 2 versions']
-        }
 
-        dist: {
-          files: [{
+        dist:
+          files: [
             expand: true
             cwd: '.tmp/'
             src: '{,*/}*.css'
             dest: '.tmp/'
-          }]
-        }
-      }
+          ]
 
       # Empties folders to start fresh
-      clean: {
-        dist: {
-          files: [{
+      clean:
+        dist:
+          files: [
             dot: true
             src: [
               '.tmp'
               '<%= config.dist %>/*'
               '!<%= config.dist %>/.git*'
             ]
-          }]
-        }
+          ]
         server: '.tmp'
-      }
 
-      wiredep: {
+      wiredep:
 
-        target: {
+        target:
           # Point to the files that should be updated when
           # you run `grunt wiredep`
           src: ['<%= config.app %>/server/views/{,*/}*.ejs']
@@ -66,53 +60,47 @@
             '<%= config.app %>/public/bower_components/leapjs-plugins'
           ]
           ignorePath: '../../public'
-          overrides: {}
-        }
-      }
 
       # Reads HTML for usemin blocks to enable smart builds that automatically
       # concat, minify and revision files. Creates configurations in memory so
       # additional tasks can operate on them
-      useminPrepare: {
-        options: {
+      useminPrepare:
+        options:
           dest: '<%= config.dist %>/public'
           root: '<%= config.app %>/public'
-        }
-      ,	html: ['<%= config.app %>/server/views/{,*/}*.ejs']
-      }
 
-      filerev: {
-        options: {
+        html: ['<%= config.app %>/server/views/{,*/}*.ejs']
+
+      filerev:
+        options:
           algorithm: 'md5'
           length: 8
-        }
-        dist: {
+
+        dist:
           src: '<%= config.dist %>/public/**/*.{css,js}'
-        }
-      }
 
       # Performs rewrites based on rev and the useminPrepare configuration
-      usemin: {
+      usemin:
         html: ['<%= config.dist %>/server/views/{,*/}*.ejs']
         css: ['<%= config.dist %>/public/styles/{,*/}*.css']
         js: ['<%= config.dist %>/public/scripts/{,*/}*.js']
-        options: {
+        options:
           assetsDirs: [
             '<%= config.dist %>/public'
             '<%= config.dist %>/public/images'
           ]
           # This is so we update image references in our ng-templates
-          patterns: {
+          patterns:
             js: [
-              [/(images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
+              [
+                /(images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm
+                'Update the JS to reference our revved images'
+              ]
             ]
-          }
-        }
-      }
 
-      htmlmin: {
-        dist: {
-          options: {
+      htmlmin:
+        dist:
+          options:
             collapseBooleanAttributes: true
             collapseWhitespace: true
             removeAttributeQuotes: true
@@ -121,19 +109,17 @@
             removeOptionalTags: true
             removeRedundantAttributes: true
             useShortDoctype: true
-          }
-          files: [{
+
+          files: [
             expand: true
             cwd: '<%= config.dist %>/server/views'
             src: '{,*/}*.ejs'
             dest: '<%= config.dist %>/server/views'
-          }]
-        }
-      }
+          ]
 
       # Copies remaining files to places other tasks can use
-      copy: {
-        dist: {
+      copy:
+        dist:
           files: [
             {
               expand: true
@@ -167,9 +153,8 @@
               ]
             }
           ]
-        }
 
-        styles: {
+        styles:
           expand: true
           cwd: '<%= config.app %>/public/'
           dest: '.tmp/'
@@ -177,112 +162,93 @@
             'styles/{,*/}*.css'
             'bower_components/**/*.css'
           ]
-        }
 
-        scripts: {
+        scripts:
           expand: true
           cwd: '<%= config.app %>/public/'
           dest: '.tmp/'
           src: [
             'scripts/{,*/}*.js'
           ]
-        }
-      }
 
       # Renames files for browser caching purposes
-      rev: {
-        dist: {
-          files: {
+      rev:
+        dist:
+          files:
             src: [
               '<%= config.dist %>/public/{,*/}*.js'
               '<%= config.dist %>/public/{,*/}*.css'
               '<%= config.dist %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
               '<%= config.dist %>/public/styles/fonts/*'
             ]
-          }
-        }
-      }
 
       # Make sure code styles are up to par and there are no obvious mistakes
-      jshint: {
-        options: {
+      jshint:
+        options:
           jshintrc: true
           reporter: stylish
-        }
+
         all: [
           'Gruntfile.js'
           '<%= config.app %>/public/scripts/*.js'
           '<%= config.app %>/server/**/*.js'
         ]
-      }
 
-      express: {
-        options: {
+      express:
+        options:
           port: 9000
-        }
-        dev: {
-          options: {
+
+        dev:
+          options:
             script: '<%= config.app %>/server'
             delay: 5
-          }
-        }
-      }
 
-      open: {
-        server: {
+      open:
+        server:
           url: 'http://localhost:<%= express.options.port %>'
-        }
-      }
 
-      watch: {
+      watch:
 
-        compass: {
+        compass:
           files: ['<%= config.app %>/public/styles/{,*/}*.{scss,sass}']
           tasks: [
             'compass'
             'autoprefixer'
           ]
-        }
 
-        coffee: {
+        coffee:
           files: ['<%= config.app %>/public/scripts/{,*/}*.{coffee}']
           tasks: ['coffee']
-        }
 
-        gruntfile: {
+        gruntfile:
           files: ['Gruntfile.js']
-        }
 
-        livereload: {
-          options: {
+        livereload:
+          options:
             livereload: true
-          }
+
           files: [
             '<%= config.app %>/server/views/{,*/}*.ejs'
             '.tmp/styles/{,*/}*.css'
             '.tmp/scripts/{,*/}*.js'
             '<%= config.app %>/public/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
           ]
-        }
 
-        express: {
+        express:
           files: ['<%= config.app %>/server/**/*.{js,json}']
           tasks: [
             'express:dev'
             'wait'
           ]
-          options: {
+          options:
             livereload: true
             # Without this option specified express won't be reloaded
             spawn: false
-          }
-        }
-      }
 
       # Compiles Sass to CSS and generates necessary files if requested
-      compass: {
+      compass:
 
-        options: {
+        options:
           sassDir: '<%= config.app %>/public/styles'
           cssDir: '.tmp/styles'
           generatedImagesDir: '.tmp/images/generated'
@@ -296,44 +262,34 @@
           relativeAssets: false
           assetCacheBuster: false
           outputStyle: 'compressed'
-        }
 
-        server: {
-          options: {
+        server:
+          options:
             debugInfo: false
-          }
-        }
-      }
 
-      coffee: {
-        compile: {
+      coffee:
+        compile:
           expand: true
           flatten: true
           cwd: '<%= config.app %>/public/scripts'
           src: ['*.coffee']
           dest: '.tmp/scripts'
           ext: '.js'
-        }
-      }
 
-      buildcontrol: {
+      buildcontrol:
 
-        options: {
+        options:
           dir: '<%= config.dist %>'
           commit: true
           push: true
           connectCommits: false
           message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
-        }
 
-        heroku: {
-          options: {
+        heroku:
+          options:
             remote: 'git@heroku.com:simon-leapmotion.git'
             branch: 'master'
-          }
-        }
-      }
-    })
+    )
 
     # Used for delaying livereload until after server has restarted
     grunt.registerTask('wait', ->
