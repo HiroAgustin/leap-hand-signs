@@ -1,6 +1,6 @@
 ((get) ->
 
-  'use strict';
+  'use strict'
 
   game = new Game(
     element: get '#js-container'
