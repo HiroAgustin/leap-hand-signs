@@ -5,19 +5,18 @@
   module.exports = (grunt) ->
 
     # Load grunt tasks automatically, when needed
-    jit(grunt,
+    jit grunt,
       express: 'grunt-express-server'
       useminPrepare: 'grunt-usemin'
       buildcontrol: 'grunt-build-control'
-    )
 
     # Time how long tasks take. Can help when optimizing build times
-    time(grunt)
+    time grunt
 
     # Define the configuration for all the tasks
     grunt.initConfig(
       # Project settings
-      pkg: grunt.file.readJSON('package.json')
+      pkg: grunt.file.readJSON 'package.json'
 
       config:
         app: 'app'
@@ -25,7 +24,6 @@
 
       # Add vendor prefixed styles
       autoprefixer:
-
         options:
           browsers: ['last 2 versions']
 
@@ -39,6 +37,8 @@
 
       # Empties folders to start fresh
       clean:
+        server: '.tmp'
+
         dist:
           files: [
             dot: true
@@ -48,18 +48,16 @@
               '!<%= config.dist %>/.git*'
             ]
           ]
-        server: '.tmp'
 
       wiredep:
-
         target:
           # Point to the files that should be updated when
           # you run `grunt wiredep`
           src: ['<%= config.app %>/server/views/{,*/}*.ejs']
+          ignorePath: '../../public'
           exclude: [
             '<%= config.app %>/public/bower_components/leapjs-plugins'
           ]
-          ignorePath: '../../public'
 
       # Reads HTML for usemin blocks to enable smart builds that automatically
       # concat, minify and revision files. Creates configurations in memory so
@@ -68,14 +66,12 @@
         options:
           dest: '<%= config.dist %>/public'
           root: '<%= config.app %>/public'
-
         html: ['<%= config.app %>/server/views/{,*/}*.ejs']
 
       filerev:
         options:
           algorithm: 'md5'
           length: 8
-
         dist:
           src: '<%= config.dist %>/public/**/*.{css,js}'
 
@@ -208,7 +204,6 @@
           url: 'http://localhost:<%= express.options.port %>'
 
       watch:
-
         compass:
           files: ['<%= config.app %>/public/styles/{,*/}*.{scss,sass}']
           tasks: [
@@ -247,7 +242,6 @@
 
       # Compiles Sass to CSS and generates necessary files if requested
       compass:
-
         options:
           sassDir: '<%= config.app %>/public/styles'
           cssDir: '.tmp/styles'
@@ -277,7 +271,6 @@
           ext: '.js'
 
       buildcontrol:
-
         options:
           dir: '<%= config.dist %>'
           commit: true
@@ -292,27 +285,24 @@
     )
 
     # Used for delaying livereload until after server has restarted
-    grunt.registerTask('wait', ->
+    grunt.registerTask 'wait', ->
 
       done = @async()
 
-      grunt.log.ok('Waiting for server reload...')
+      grunt.log.ok 'Waiting for server reload...'
 
-      setTimeout( ->
+      setTimeout ->
 
         grunt.log.writeln('Done waiting!')
         done()
 
-      , 1500)
-    )
+      , 1500
 
-    grunt.registerTask('express-keepalive', 'Keep grunt running', ->
-      @async()
-    )
+    grunt.registerTask 'express-keepalive', 'Keep grunt running', -> @async()
 
-    grunt.registerTask('serve', ->
+    grunt.registerTask 'serve', ->
 
-      grunt.task.run([
+      grunt.task.run [
         'clean:server'
         'coffee'
         'compass'
@@ -321,10 +311,9 @@
         'wait'
         'open'
         'watch'
-      ])
-    )
+      ]
 
-    grunt.registerTask('build', [
+    grunt.registerTask 'build', [
       'clean:dist'
       'useminPrepare'
       'coffee'
@@ -337,11 +326,11 @@
       'filerev'
       'usemin'
       'htmlmin'
-    ])
+    ]
 
-    grunt.registerTask('deploy', [
+    grunt.registerTask 'deploy', [
       'build'
       'buildcontrol'
-    ])
+    ]
 
 )(require('jit-grunt'), require('time-grunt'), require('jshint-stylish'))
